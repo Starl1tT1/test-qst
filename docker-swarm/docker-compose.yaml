@@ -1,0 +1,50 @@
+services:
+  app:
+    image: ubuntu:22.04
+    command: ["sleep", "infinity"]
+
+    environment:
+      HOSTNAME: "{{.Node.Hostname}}"
+
+    networks:
+      - db-postgres-net
+      - ds-redis-net
+
+    volumes:
+      - app-logs:/var/log/app
+
+    deploy:
+      replicas: 2
+
+      placement:
+        constraints:
+          - node.labels.SERVERTYPE == worker
+
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 500M
+
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
+
+      restart_policy:
+        condition: any
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "1"
+
+volumes:
+  app-logs:
+    driver: local
+
+networks:
+  db-postgres-net:
+    external: true
+  ds-redis-net:
+    external: true

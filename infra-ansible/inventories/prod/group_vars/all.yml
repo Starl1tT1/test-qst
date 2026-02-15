@@ -1,0 +1,15 @@
+admin_users:
+  - admin-1
+  - admin-2
+  - admin-3
+
+tech_users:
+  - ansible
+  - autodeploy
+
+docker_package: docker.io
+required_packages:
+  - mc
+  - ncdu
+  - cifs-utils
+  - nfs-common

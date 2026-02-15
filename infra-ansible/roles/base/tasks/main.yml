@@ -1,0 +1,36 @@
+- name: Ensure sudo installed
+  apt:
+    name: sudo
+    state: present
+    update_cache: yes
+
+- name: Create admin users
+  user:
+    name: "{{ item }}"
+    groups: sudo
+    append: yes
+    shell: /bin/bash
+    create_home: yes
+  loop: "{{ admin_users }}"
+
+- name: Create technical users
+  user:
+    name: "{{ item }}"
+    shell: /bin/bash
+    create_home: yes
+  loop: "{{ tech_users }}"
+
+- name: Install required packages
+  apt:
+    name: "{{ required_packages }}"
+    state: present
+    update_cache: yes
+
+- name: Configure sshd
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart ssh

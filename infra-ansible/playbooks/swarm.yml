@@ -1,0 +1,30 @@
+---
+- name: Init swarm on manager
+  hosts: managers
+  become: yes
+  tasks:
+    - name: Initialize swarm
+      community.docker.docker_swarm:
+        state: present
+        advertise_addr: "{{ ansible_host }}"
+      register: swarm_init
+
+    - name: Set join token fact
+      set_fact:
+        worker_token: "{{ swarm_init.swarm_facts.JoinTokens.Worker }}"
+
+- name: Join workers to swarm
+  hosts: workers
+  become: yes
+  tasks:
+    - name: Join swarm as worker
+      community.docker.docker_swarm:
+        state: join
+        join_token: "{{ hostvars[groups['managers'][0]].worker_token }}"
+        remote_addrs: ["{{ hostvars[groups['managers'][0]].ansible_host }}"]
+
+    - name: Add worker label
+      community.docker.docker_node:
+        hostname: "{{ ansible_hostname }}"
+        labels:
+          role: worker

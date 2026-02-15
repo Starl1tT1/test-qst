@@ -1,0 +1,11 @@
+- name: Install docker from Ubuntu repo
+  apt:
+    name: "{{ docker_package }}"
+    state: present
+    update_cache: yes
+
+- name: Enable docker
+  service:
+    name: docker
+    enabled: yes
+    state: started
