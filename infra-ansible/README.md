@@ -13,6 +13,31 @@
 - Назначения worker-нодам label `role=worker`
 
 ---
+## Структура
+infra-ansible
+├── ansible.cfg
+├── inventories
+│   └── prod
+│       ├── group_vars
+│       │   └── all.yml
+│       └── hosts.yml
+├── playbooks
+│   ├── prepare_servers.yml
+│   └── swarm.yml
+├── README.md
+└── roles
+    ├── base
+    │   ├── handlers
+    │   │   └── main.yml
+    │   ├── tasks
+    │   │   └── main.yml
+    │   └── templates
+    │       └── sshd_config.j2
+    └── docker
+        ├── handlers
+        │   └── main.yml
+        └── tasks
+            └── main.yml
 
 ## Требования
 
