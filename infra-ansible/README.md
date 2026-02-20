@@ -14,6 +14,7 @@
 
 ---
 ## Структура
+```
 infra-ansible  
 ├── ansible.cfg  
 ├── inventories  
@@ -38,7 +39,7 @@ infra-ansible
         │   └── main.yml  
         └── tasks  
             └── main.yml  
-
+```
 ## Требования
 
 ### Управляющая машина
